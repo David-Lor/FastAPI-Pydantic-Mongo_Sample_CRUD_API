@@ -32,7 +32,7 @@ The API works with a single entity, "Person" (or "People" in plural) that gets s
 
 ## Requirements
 
-- Python >= 3.6
+- Python >= 3.7
 - Requirements listed on [requirements.txt](requirements.txt)
 - Running MongoDB server
 
