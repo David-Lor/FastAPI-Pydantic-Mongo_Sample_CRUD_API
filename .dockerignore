@@ -1,0 +1,7 @@
+.git/
+.github/
+.pytest_cache/
+*pycache*
+.idea/
+.vscode/
+.env
