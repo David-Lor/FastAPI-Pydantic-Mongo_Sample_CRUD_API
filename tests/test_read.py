@@ -21,8 +21,11 @@ class TestGet(BaseTest):
 
     def test_get_nonexisting_person(self):
         """Get a person that does not exist.
-        Should return not found 404 error"""
-        self.get_person(get_uuid(), statuscode=statuscode.HTTP_404_NOT_FOUND)
+        Should return not found 404 error and the identifier"""
+        person_id = get_uuid()
+
+        response = self.get_person(person_id, statuscode=statuscode.HTTP_404_NOT_FOUND)
+        assert response.json()["identifier"] == person_id
 
 
 class TestList(BaseTest):

@@ -9,6 +9,7 @@ from fastapi import status as statuscode
 
 # # Package # #
 from .models import *
+from .exceptions import *
 from .repositories import PeopleRepository
 from .middlewares import request_handler
 from .settings import api_settings as settings
@@ -37,6 +38,7 @@ def _list_people():
     "/people/{person_id}",
     response_model=PersonRead,
     description="Get a single person by its unique ID",
+    responses=get_exception_responses(PersonNotFoundException),
     tags=["people"]
 )
 def _get_person(person_id: str):
@@ -48,6 +50,7 @@ def _get_person(person_id: str):
     description="Create a new person",
     response_model=PersonRead,
     status_code=statuscode.HTTP_201_CREATED,
+    responses=get_exception_responses(PersonAlreadyExistsException),
     tags=["people"]
 )
 def _create_person(create: PersonCreate):
@@ -58,6 +61,7 @@ def _create_person(create: PersonCreate):
     "/people/{person_id}",
     description="Update a single person by its unique ID, providing the fields to update",
     status_code=statuscode.HTTP_204_NO_CONTENT,
+    responses=get_exception_responses(PersonNotFoundException, PersonAlreadyExistsException),
     tags=["people"]
 )
 def _update_person(person_id: str, update: PersonUpdate):
@@ -68,6 +72,7 @@ def _update_person(person_id: str, update: PersonUpdate):
     "/people/{person_id}",
     description="Delete a single person by its unique ID",
     status_code=statuscode.HTTP_204_NO_CONTENT,
+    responses=get_exception_responses(PersonNotFoundException),
     tags=["people"]
 )
 def _delete_person(person_id: str):
