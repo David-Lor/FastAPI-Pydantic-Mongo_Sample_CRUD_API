@@ -19,7 +19,8 @@ async def request_handler(request: Request, call_next):
         return await call_next(request)
 
     except Exception as ex:
-        if isinstance(ex, EntityError):
-            return ex.response
+        if isinstance(ex, BaseAPIException):
+            return ex.response()
 
+        # Re-raising other exceptions will return internal error 500 to the client
         raise ex

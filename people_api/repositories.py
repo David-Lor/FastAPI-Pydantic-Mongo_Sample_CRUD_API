@@ -17,7 +17,7 @@ class PeopleRepository:
         """Retrieve a single Person by its unique id"""
         document = collection.find_one({"_id": person_id})
         if not document:
-            raise PersonNotFound(person_id)
+            raise PersonNotFoundException(person_id)
         return PersonRead(**document)
 
     @staticmethod
@@ -45,14 +45,14 @@ class PeopleRepository:
         """Update a person by giving only the fields to update"""
         document = update.dict()
         document["updated"] = get_time()
-        
+
         result = collection.update_one({"_id": person_id}, {"$set": document})
         if not result.modified_count:
-            raise PersonNotFound(person_id)
+            raise PersonNotFoundException(identifier=person_id)
 
     @staticmethod
     def delete(person_id: str):
         """Delete a person given its unique id"""
         result = collection.delete_one({"_id": person_id})
         if not result.deleted_count:
-            raise PersonNotFound(person_id)
+            raise PersonNotFoundException(identifier=person_id)

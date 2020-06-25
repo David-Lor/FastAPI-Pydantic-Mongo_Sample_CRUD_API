@@ -89,8 +89,11 @@ class TestDelete(BaseTest):
 
     def test_delete_nonexisting_person(self):
         """Delete a person that does not exist.
-        Should return not found 404 error"""
-        self.delete_person(get_uuid(), statuscode=statuscode.HTTP_404_NOT_FOUND)
+        Should return not found 404 error and the identifier"""
+        person_id = get_uuid()
+
+        response = self.delete_person(person_id, statuscode=statuscode.HTTP_404_NOT_FOUND)
+        assert response.json()["identifier"] == person_id
 
 
 class TestUpdate(BaseTest):
@@ -109,9 +112,12 @@ class TestUpdate(BaseTest):
 
     def test_update_nonexisting_person(self):
         """Update the name of a person that does not exist.
-        Should return not found 404 error"""
+        Should return not found 404 error and the identifier"""
+        person_id = get_uuid()
         update = PersonUpdate(name=get_uuid())
-        self.update_person(get_uuid(), update.dict(), statuscode=statuscode.HTTP_404_NOT_FOUND)
+
+        response = self.update_person(person_id, update.dict(), statuscode=statuscode.HTTP_404_NOT_FOUND)
+        assert response.json()["identifier"] == person_id
 
     def test_update_person_none_attributes(self):
         """Update a person sending an empty object.
